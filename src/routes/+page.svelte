@@ -1,3 +1,7 @@
+<script>
+  import BoggleTile from './BoggleTile.svelte';
+</script>
+
 <main class="page">
   <header class="page__header">
     <h1 class="page__title">Joeggle</h1>
@@ -8,12 +12,28 @@
 
   <section class="page__status">
     <div class="page__time">Time: 01:10</div>
-    <div class="page__message">a message</div>
+    <div class="page__message">No words huh?</div>
     <div class="page__score">Score: 23</div>
   </section>
 
   <section class="game">
     <section class="game__board">
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
+      <BoggleTile/>
     </section>
     <section class="game__words">
       <div class="game__word">Here's a word</div>
@@ -99,6 +119,10 @@
   .game__board {
     background: var(--greylighter);
     min-height: 300px;
+
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    grid-template-rows: repeat(4, 1fr);
   }
 
   .page {
