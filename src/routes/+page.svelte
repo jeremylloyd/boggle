@@ -37,6 +37,9 @@
     </section>
     <section class="game__words">
       <div class="game__word">Here's a word</div>
+      <div class="game__word">Here's another word</div>
+      <div class="game__word">leaf</div>
+      <div class="game__word">fred</div>
     </section>
   </section>
 </main>
@@ -109,16 +112,22 @@
   .game {
     display: flex;
     flex-direction: column;
+    align-items: center;
     gap: 20px;
 
-    width: 100%;
+    min-height: calc(100vh - 130px);
+    width: 100vw;
     padding: 20px;
+    margin-bottom: auto;
     background: var(--greylight);
   }
 
   .game__board {
     background: var(--greylighter);
-    min-height: 300px;
+    width: 100%;
+    max-height: 300px;
+    max-width: 300px;
+    aspect-ratio: 1/1;
 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -128,6 +137,7 @@
   .page {
     display: flex;
     flex-direction: column;
+    justify-content: space-between;
     gap: 20px;
     align-items: center;
     font-family: 'Segoe UI';
@@ -139,7 +149,9 @@
   }
 
   .page__header {
-
+    height: 60px;
+    display: flex;
+    align-items: center;
   }
 
   .page__message {
@@ -161,6 +173,7 @@
     justify-content: space-between;
     align-items: center;
 
+    height: 30px;
     width: 100%;
     padding: 0px 20px;
   }
@@ -179,5 +192,18 @@
 
   .game__words {
 
+  }
+
+  @media screen and (min-width: 500px) {
+    .game {
+      flex-direction: row;
+      align-items: flex-start;
+    }
+
+    .game__board {
+      width: 50%;
+      max-height: unset;
+      max-width: 400px;
+    }
   }
 </style>

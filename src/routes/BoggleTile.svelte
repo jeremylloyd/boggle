@@ -4,9 +4,7 @@
 
 <style>
   .tile {
-    width: 50px;
-    height: 50px;
     background: red;
-    margin: 10px;
+    border: solid 1px black;
   }
 </style>
