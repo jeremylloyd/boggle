@@ -17,30 +17,33 @@
   </section>
 
   <section class="game">
-    <section class="game__board">
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-      <BoggleTile/>
-    </section>
-    <section class="game__words">
+    <div class="game__main">
+
+      <div class="game__board">
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+        <BoggleTile/>
+      </div>
+    </div>
+    <div class="game__words">
       <div class="game__word">Here's a word</div>
       <div class="game__word">Here's another word</div>
       <div class="game__word">leaf</div>
       <div class="game__word">fred</div>
-    </section>
+    </div>
   </section>
 </main>
 
@@ -107,6 +110,13 @@
     --greylighter: hsl(0, 0%, 95%);
     --greylight: hsl(0, 0%, 90%);
     --grey: hsl(0, 0%, 75%);
+  }
+
+  .game__main {
+    width: 100%;
+    max-height: 300px;
+    max-width: 300px;
+    aspect-ratio: 1/1;
   }
 
   .game {
