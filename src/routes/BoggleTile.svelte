@@ -6,5 +6,6 @@
   .tile {
     background: red;
     border: solid 1px black;
+    aspect-ratio: 1/1;
   }
 </style>

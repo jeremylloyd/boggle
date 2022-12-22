@@ -113,21 +113,24 @@
   }
 
   .game__main {
-  
+    border: dashed 1px orange;
   }
 
   .game {
+    border: dashed 1px red;
     display: flex;
     flex-direction: column;
     align-items: center;
 
+    width: 100vw;
     margin-bottom: auto;
     background: var(--greylight);
   }
 
   .game__board {
     background: var(--greylighter);
-    aspect-ratio: 1/1;
+    width: min(100vw - 40px, 100vh - 100px);
+    gap: 4px;
 
     display: grid;
     grid-template-columns: repeat(4, 1fr);
@@ -192,6 +195,11 @@
     .game {
       flex-direction: row;
       align-items: flex-start;
+    }
+
+    .game__board {
+      width: min(50vw - 40px, 100vh - 100px);
+      min-width: 300px;
     }
   }
 </style>
