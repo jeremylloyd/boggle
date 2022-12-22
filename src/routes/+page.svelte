@@ -18,7 +18,7 @@
 
   <section class="game">
     <div class="game__main">
-
+      <div class="game__current">lea</div>
       <div class="game__board">
         <BoggleTile/>
         <BoggleTile/>
@@ -113,30 +113,20 @@
   }
 
   .game__main {
-    width: 100%;
-    max-height: 300px;
-    max-width: 300px;
-    aspect-ratio: 1/1;
+  
   }
 
   .game {
     display: flex;
     flex-direction: column;
     align-items: center;
-    gap: 20px;
 
-    min-height: calc(100vh - 130px);
-    width: 100vw;
-    padding: 20px;
     margin-bottom: auto;
     background: var(--greylight);
   }
 
   .game__board {
     background: var(--greylighter);
-    width: 100%;
-    max-height: 300px;
-    max-width: 300px;
     aspect-ratio: 1/1;
 
     display: grid;
@@ -148,26 +138,21 @@
     display: flex;
     flex-direction: column;
     justify-content: space-between;
-    gap: 20px;
     align-items: center;
     font-family: 'Segoe UI';
 
     min-height: 100vh;
-    width: 100%;
     background: var(--grey);
-    border: none;
   }
 
   .page__header {
-    height: 60px;
-    display: flex;
-    align-items: center;
+
   }
 
   .page__message {
     position: absolute;
     text-align: center;
-    width: calc(100% - 40px);
+    width: calc(100% - 40px);  /* calculated from page__status padding */
   }
 
   .page__nav {
@@ -183,7 +168,6 @@
     justify-content: space-between;
     align-items: center;
 
-    height: 30px;
     width: 100%;
     padding: 0px 20px;
   }
@@ -208,12 +192,6 @@
     .game {
       flex-direction: row;
       align-items: flex-start;
-    }
-
-    .game__board {
-      width: 50%;
-      max-height: unset;
-      max-width: 400px;
     }
   }
 </style>
