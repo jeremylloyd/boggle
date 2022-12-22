@@ -43,6 +43,20 @@
       <div class="game__word">Here's another word</div>
       <div class="game__word">leaf</div>
       <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
     </div>
   </section>
 </main>
@@ -113,7 +127,14 @@
   }
 
   .game__main {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
     border: dashed 1px orange;
+  }
+
+  .game__current {
+    text-align: center
   }
 
   .game {
@@ -121,7 +142,10 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+    gap: 10px;
+    padding: 10px;
 
+    flex-grow: 1;
     width: 100vw;
     margin-bottom: auto;
     background: var(--greylight);
@@ -129,7 +153,7 @@
 
   .game__board {
     background: var(--greylighter);
-    width: min(100vw - 40px, 100vh - 100px);
+    width: min(100vw - 40px, 100vh - 120px);
     gap: 4px;
 
     display: grid;
@@ -184,11 +208,12 @@
   }
 
   .game__word {
-
+    width: 150px;
   }
 
   .game__words {
-
+    display: flex;
+    flex-wrap: wrap;
   }
 
   @media screen and (min-width: 500px) {
@@ -198,7 +223,7 @@
     }
 
     .game__board {
-      width: min(50vw - 40px, 100vh - 100px);
+      width: min(60vw - 40px, 100vh - 120px);
       min-width: 300px;
     }
   }

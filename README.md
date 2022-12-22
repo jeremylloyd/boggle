@@ -10,6 +10,8 @@ Implementation of the classic Boggle game in Svelte.
   - Extension options
     - Annoying colour changes in the last 10 seconds to distract
     - Taunting messages if the user hasn't found a word in a while
+    - Letters randomly go invisible
+    - Background going crazy colours towards the end
 - Design
   - Sketch layout in Excalidraw
   - HTML design in paint
