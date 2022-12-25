@@ -1,10 +1,37 @@
 <script>
   import BoggleTile from './BoggleTile.svelte';
+
+  let letters = 'abcdefghijklmnop';
+
+  let currentWord = [];
+  let isDragging = false;
+
+  const handleLetter = (event) => {
+    if (currentWord.some(tile => tile.id === event.detail.id)) return;
+    currentWord.push(event.detail);
+    console.log(currentWord.map(obj => obj.letter).join(''));
+  }
+  
+  const handleWord = (event) => {
+    let word = currentWord.map(obj => obj.letter).join('');
+    console.log(`word created: ${word}`);
+    currentWord = [];
+  }
+
+  const handleMouseup = (event) => {
+    if (!isDragging) {
+      console.log(`Not creating word. mouseup did nothing`);
+      return;
+    }
+
+    handleWord(event);
+    isDragging = false;
+  }
 </script>
 
-<main class="page">
+<main class="page" on:mouseup={handleMouseup}>
   <header class="page__header">
-    <h1 class="page__title">Joeggle</h1>
+    <h1 class="page__title">Boggle</h1>
     <nav class="page__nav">
 
     </nav>
@@ -20,28 +47,25 @@
     <div class="game__main">
       <div class="game__current">lea</div>
       <div class="game__board">
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
-        <BoggleTile/>
+        {#each letters as letter, id}
+          <BoggleTile
+            letter={letter}
+            id={id}
+            on:addLetterToCurrent={handleLetter}
+            bind:isDragging
+          />
+        {/each}
       </div>
     </div>
     <div class="game__words">
       <div class="game__word">Here's a word</div>
       <div class="game__word">Here's another word</div>
       <div class="game__word">leaf</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
+      <div class="game__word">fred</div>
       <div class="game__word">fred</div>
       <div class="game__word">fred</div>
       <div class="game__word">fred</div>
