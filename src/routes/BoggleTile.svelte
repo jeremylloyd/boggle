@@ -1,13 +1,14 @@
 <script>
   export let letter;
-  export let selected = false;
+  export let state = 'ready';
 
   const deadzone = 0.25; // percentage of width to ignore
 </script>
 
 <div 
   class="tile"
-  class:tile--selected={selected}
+  class:tile--ready={state == 'ready'}
+  class:tile--selected={state == 'selected'}
   on:mouseenter
   on:mouseleave
   on:mousedown
@@ -26,7 +27,7 @@
     text-transform: uppercase;
     user-select:none;
     
-    background: red;
+    background: grey;
     border: solid 1px black;
     aspect-ratio: 1/1;
     border-radius: 15%;
@@ -34,5 +35,9 @@
 
   .tile--selected {
     background: lime;
+  }
+
+  .tile--ready {
+    background: red;
   }
 </style>

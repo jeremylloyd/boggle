@@ -3,13 +3,152 @@
 
   let boggleState = {
     'letters': 'abcdefghijklmnop',
-    'wordCurrent': [0, 1, 2, 3],
+    'wordCurrent': [],
+    'tiles': [
+      {
+        letter: 'a',
+        state: 'disabled',
+      },
+      {
+        letter: 'b',
+        state: 'selected',
+      },
+      {
+        letter: 'c',
+        state: 'disabled',
+      },
+      {
+        letter: 'd',
+        state: 'disabled',
+      },
+      {
+        letter: 'e',
+        state: 'disabled',
+      },
+      {
+        letter: 'f',
+        state: 'disabled',
+      },
+      {
+        letter: 'g',
+        state: 'disabled',
+      },
+      {
+        letter: 'h',
+        state: 'disabled',
+      },
+      {
+        letter: 'i',
+        state: 'disabled',
+      },
+      {
+        letter: 'j',
+        state: 'disabled',
+      },
+      {
+        letter: 'k',
+        state: 'disabled',
+      },
+      {
+        letter: 'l',
+        state: 'disabled',
+      },
+      {
+        letter: 'm',
+        state: 'disabled',
+      },
+      {
+        letter: 'n',
+        state: 'disabled',
+      },
+      {
+        letter: 'o',
+        state: 'disabled',
+      },
+      {
+        letter: 'p',
+        state: 'disabled',
+      },
+    ],
     'possibleWords': ['abc', 'dhgf', 'lkji'],
     'wordsCorrect': [],
     'wordsIncorrect': [],
   }
 
   let wordCurrent = ''
+
+  const tileIsDisabled = (tileId) => {
+    if (boggleState.wordCurrent.length === 0) return true
+
+    // Check if the tile is a neighbour of the previous tile
+    if (boggleState.wordCurrent.length > 0) {
+      if (!neighbours(4, boggleState.wordCurrent[boggleState.wordCurrent.length - 1]).includes(tileId)) return true
+    }
+
+    return false
+  }
+
+  const neighbours = (gridSize, cell) => {
+    let neighbours = []
+
+    // Check left
+    if (cell % gridSize !== 0) {
+      neighbours.push(cell - 1)
+    }
+
+    // Check right
+    if (cell % gridSize !== gridSize - 1) {
+      neighbours.push(cell + 1)
+    }
+
+    // Check up
+    if (cell - gridSize >= 0) {
+      neighbours.push(cell - gridSize)
+    }
+
+    // Check down
+    if (cell + gridSize < gridSize * gridSize) {
+      neighbours.push(cell + gridSize)
+    }
+
+    // Check up-left
+    if (cell - gridSize - 1 >= 0 && cell % gridSize !== 0) {
+      neighbours.push(cell - gridSize - 1)
+    }
+
+    // Check up-right
+    if (cell - gridSize + 1 >= 0 && cell % gridSize !== gridSize - 1) {
+      neighbours.push(cell - gridSize + 1)
+    }
+
+    // Check down-left
+    if (cell + gridSize - 1 < gridSize * gridSize && cell % gridSize !== 0) {
+      neighbours.push(cell + gridSize - 1)
+    }
+
+    // Check down-right
+    if (cell + gridSize + 1 < gridSize * gridSize && cell % gridSize !== gridSize - 1) {
+      neighbours.push(cell + gridSize + 1)
+    }
+
+    return neighbours
+  }
+
+  const checkWord = (word) => {
+    // Check if word exists in dictionary
+    if (boggleState.possibleWords.includes(word)) {
+      // Check if word has already been found
+      if (boggleState.wordsCorrect.includes(word)) {
+        return false
+      } else {
+        boggleState.wordsCorrect.push(word)
+        return true
+      }
+    } else {
+      boggleState.wordsIncorrect.push(word)
+      return false
+    }
+  }
 
   const createWord = (tileId) => {
     console.log(`word created, starting with letter ${boggleState.letters[tileId]}`)
@@ -25,6 +164,10 @@
 
   const handleMouseEnter = (tileId) => {
     if (!boggleState.wordCurrent.length > 0) return
+    // Ensure the mouse entered a neighbour of the previous tile
+    if (!neighbours(4, boggleState.wordCurrent[boggleState.wordCurrent.length - 1]).includes(tileId)) return
+    // Ensure the tile isn't already in the word
+    if (boggleState.wordCurrent.includes(tileId)) return
     
     boggleState.wordCurrent.push(tileId)
     // ensure svelte reacts to the change
@@ -35,14 +178,27 @@
   }
 
   $: wordCurrent = boggleState.wordCurrent.map((tileId) => boggleState.letters[tileId]).join('');
+
+  // update tile state in boggleState
+  $: boggleState.tiles = boggleState.tiles.map((tile, id) => {
+    if (boggleState.wordCurrent.includes(id)) {
+      tile.state = 'selected'
+    } else if (tileIsDisabled(id)) {
+      tile.state = 'disabled'
+    } else {
+      tile.state = 'ready'
+    }
+
+    return tile
+  })
 </script>
 
 <section class="game">
   <div class="game__main">
     <div class="game__current">{wordCurrent}</div>
     <div class="game__board">
-      {#each boggleState.letters as letter, id}
-        <BoggleTile letter={letter} on:mousedown={() => createWord(id)} on:mouseup={finishWord} on:mouseenter={() => handleMouseEnter(id)} selected={boggleState.wordCurrent.includes(id)}/>
+      {#each boggleState.tiles as tile, id}
+        <BoggleTile {...tile} on:mousedown={() => createWord(id)} on:mouseup={finishWord} on:mouseenter={() => handleMouseEnter(id)}/>
       {/each}
     </div>
   </div>
