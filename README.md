@@ -7,6 +7,7 @@ Implementation of the classic Boggle game in Svelte.
 - Create specification
   - Diagrams
   - Prioritised list of functionality
+    - User can create words by dragging and dropping mouse
   - Extension options
     - Annoying colour changes in the last 10 seconds to distract
     - Taunting messages if the user hasn't found a word in a while

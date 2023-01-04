@@ -1,35 +1,15 @@
 <script>
   import BoggleTile from './BoggleTile.svelte';
+  import Boggle from './Boggle.svelte';
 
-  let letters = 'abcdefghijklmnop';
+  let boggle;
 
-  let currentWord = [];
-  let isDragging = false;
-
-  const handleLetter = (event) => {
-    if (currentWord.some(tile => tile.id === event.detail.id)) return;
-    currentWord.push(event.detail);
-    console.log(currentWord.map(obj => obj.letter).join(''));
-  }
-  
-  const handleWord = (event) => {
-    let word = currentWord.map(obj => obj.letter).join('');
-    console.log(`word created: ${word}`);
-    currentWord = [];
-  }
-
-  const handleMouseup = (event) => {
-    if (!isDragging) {
-      console.log(`Not creating word. mouseup did nothing`);
-      return;
-    }
-
-    handleWord(event);
-    isDragging = false;
+  const handleMouseUp = () => {
+    boggle.finishWord();
   }
 </script>
 
-<main class="page" on:mouseup={handleMouseup}>
+<main class="page" on:mouseup={handleMouseUp}>
   <header class="page__header">
     <h1 class="page__title">Boggle</h1>
     <nav class="page__nav">
@@ -43,46 +23,7 @@
     <div class="page__score">Score: 23</div>
   </section>
 
-  <section class="game">
-    <div class="game__main">
-      <div class="game__current">lea</div>
-      <div class="game__board">
-        {#each letters as letter, id}
-          <BoggleTile
-            letter={letter}
-            id={id}
-            on:addLetterToCurrent={handleLetter}
-            bind:isDragging
-          />
-        {/each}
-      </div>
-    </div>
-    <div class="game__words">
-      <div class="game__word">Here's a word</div>
-      <div class="game__word">Here's another word</div>
-      <div class="game__word">leaf</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-      <div class="game__word">fred</div>
-    </div>
-  </section>
+  <Boggle bind:this={boggle}/>
 </main>
 
 <style>
@@ -150,41 +91,6 @@
     --grey: hsl(0, 0%, 75%);
   }
 
-  .game__main {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    border: dashed 1px orange;
-  }
-
-  .game__current {
-    text-align: center
-  }
-
-  .game {
-    border: dashed 1px red;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
-    padding: 10px;
-
-    flex-grow: 1;
-    width: 100vw;
-    margin-bottom: auto;
-    background: var(--greylight);
-  }
-
-  .game__board {
-    background: var(--greylighter);
-    width: min(100vw - 40px, 100vh - 120px);
-    gap: 4px;
-
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    grid-template-rows: repeat(4, 1fr);
-  }
-
   .page {
     display: flex;
     flex-direction: column;
@@ -229,26 +135,5 @@
 
   .page__title {
     font-size: 2rem;
-  }
-
-  .game__word {
-    width: 150px;
-  }
-
-  .game__words {
-    display: flex;
-    flex-wrap: wrap;
-  }
-
-  @media screen and (min-width: 500px) {
-    .game {
-      flex-direction: row;
-      align-items: flex-start;
-    }
-
-    .game__board {
-      width: min(60vw - 40px, 100vh - 120px);
-      min-width: 300px;
-    }
   }
 </style>
