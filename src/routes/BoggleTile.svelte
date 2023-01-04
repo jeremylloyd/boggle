@@ -27,17 +27,17 @@
     text-transform: uppercase;
     user-select:none;
     
-    background: grey;
+    background: rgba(255, 0, 0, 0.2);
     border: solid 1px black;
     aspect-ratio: 1/1;
     border-radius: 15%;
   }
 
   .tile--selected {
-    background: lime;
+    background: red;
   }
 
   .tile--ready {
-    background: red;
+    background: rgba(255, 0, 0, 0.4);
   }
 </style>
