@@ -24,14 +24,14 @@
   }
 
   const handleMouseEnter = (tileId) => {
-    if (boggleState.wordCurrent.length > 0) {
-      boggleState.wordCurrent.push(tileId)
-      // ensure svelte reacts to the change
-      boggleState.wordCurrent = boggleState.wordCurrent
+    if (!boggleState.wordCurrent.length > 0) return
+    
+    boggleState.wordCurrent.push(tileId)
+    // ensure svelte reacts to the change
+    boggleState.wordCurrent = boggleState.wordCurrent
 
-      // Log the updated word
-      console.log(`word updated: ${wordCurrent}`)
-    }
+    // Log the updated word
+    console.log(`word updated: ${wordCurrent}`)
   }
 
   $: wordCurrent = boggleState.wordCurrent.map((tileId) => boggleState.letters[tileId]).join('');
@@ -42,7 +42,7 @@
     <div class="game__current">{wordCurrent}</div>
     <div class="game__board">
       {#each boggleState.letters as letter, id}
-        <BoggleTile letter={letter} on:mousedown={() => createWord(id)} on:mouseup={finishWord} on:mouseenter={() => handleMouseEnter(id)}/>
+        <BoggleTile letter={letter} on:mousedown={() => createWord(id)} on:mouseup={finishWord} on:mouseenter={() => handleMouseEnter(id)} selected={boggleState.wordCurrent.includes(id)}/>
       {/each}
     </div>
   </div>

@@ -9,7 +9,7 @@
   class="tile"
   class:tile--selected={selected}
   on:mouseenter
-  on:mouseleave={() => selected = false}
+  on:mouseleave
   on:mousedown
   on:mouseup
 >

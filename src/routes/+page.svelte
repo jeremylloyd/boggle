@@ -4,12 +4,12 @@
 
   let boggle;
 
-  const handleMouseUp = () => {
-    boggle.finishWord();
+  const finishWord = () => {
+    boggle.finishWord()
   }
 </script>
 
-<main class="page" on:mouseup={handleMouseUp}>
+<main class="page" on:mouseup={finishWord} on:mouseleave={finishWord}>
   <header class="page__header">
     <h1 class="page__title">Boggle</h1>
     <nav class="page__nav">
