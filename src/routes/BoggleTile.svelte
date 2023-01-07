@@ -28,6 +28,8 @@
     user-select:none;
     
     background: rgba(255, 0, 0, 0.2);
+    color: grey;
+
     border: solid 1px black;
     aspect-ratio: 1/1;
     border-radius: 15%;
@@ -35,9 +37,11 @@
 
   .tile--selected {
     background: red;
+    color: black;
   }
 
   .tile--ready {
-    background: rgba(255, 0, 0, 0.4);
+    /* background: rgba(255, 0, 0, 0.4); */
+    color: black;
   }
 </style>

@@ -1,5 +1,4 @@
 <script>
-  import BoggleTile from './BoggleTile.svelte';
   import Boggle from './Boggle.svelte';
 
   let boggle;
@@ -7,7 +6,11 @@
   const finishWord = () => {
     boggle.finishWord()
   }
+
+  export let data;
 </script>
+
+<h1>{data.dictionary.slice(170000, 170010)}</h1>
 
 <main class="page" on:mouseup={finishWord} on:mouseleave={finishWord}>
   <header class="page__header">

@@ -70,12 +70,16 @@
         state: 'disabled',
       },
     ],
-    'possibleWords': ['abc', 'dhgf', 'lkji'],
-    'wordsCorrect': [],
-    'wordsIncorrect': [],
+    'possibleWords': new Set(['abc', 'dhgf', 'lkji']),
+    'wordsCorrect': new Set(['abc', 'dhgf', 'lkji']),
+    'wordsIncorrect': new Set(),
   }
 
-  let wordCurrent = ''
+  let words = new Set([1, 2, 3])
+  const minWordLength = 4;
+
+  let wordCurrent;
+  let status = '';
 
   const tileIsDisabled = (tileId) => {
     if (boggleState.wordCurrent.length === 0) return true
@@ -134,31 +138,17 @@
     return neighbours
   }
 
-  const checkWord = (word) => {
-    // Check if word exists in dictionary
-    if (boggleState.possibleWords.includes(word)) {
-      // Check if word has already been found
-      if (boggleState.wordsCorrect.includes(word)) {
-        return false
-      } else {
-        boggleState.wordsCorrect.push(word)
-        return true
-      }
-    } else {
-      boggleState.wordsIncorrect.push(word)
-      return false
-    }
-  }
-
   const createWord = (tileId) => {
     console.log(`word created, starting with letter ${boggleState.letters[tileId]}`)
     boggleState.wordCurrent = [tileId]
   }
 
   export const finishWord = () => {
-    if (!boggleState.wordCurrent.length > 0) return
-
+    
     console.log(`word finished: ${wordCurrent}`)
+    if (boggleState.wordCurrent.length > 0 && boggleState.wordCurrent.length >= minWordLength) {
+      boggleState.wordsCorrect.add(wordCurrent);
+    }
     boggleState.wordCurrent = []
   }
 
@@ -195,7 +185,7 @@
 
 <section class="game">
   <div class="game__main">
-    <div class="game__current">{wordCurrent}</div>
+    <div class="game__current">{status}</div>
     <div class="game__board">
       {#each boggleState.tiles as tile, id}
         <BoggleTile {...tile} on:mousedown={() => createWord(id)} on:mouseup={finishWord} on:mouseenter={() => handleMouseEnter(id)}/>
@@ -203,29 +193,9 @@
     </div>
   </div>
   <div class="game__words">
-    <div class="game__word">Here's a word</div>
-    <div class="game__word">Here's another word</div>
-    <div class="game__word">leaf</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
-    <div class="game__word">fred</div>
+    {#each [...boggleState.wordsCorrect] as word}
+      <div class="game__word">{word}</div>
+    {/each}
   </div>
 </section>
 
@@ -238,7 +208,8 @@
   }
 
   .game__current {
-    text-align: center
+    text-align: center;
+    min-height: 1rem;
   }
 
   .game {
