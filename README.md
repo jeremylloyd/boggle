@@ -2,6 +2,8 @@
 
 Implementation of the classic Boggle game in Svelte.
 
+Deployed (here)[https://boggle-taupe.vercel.app/]
+
 ## Design Plan
 
 - Create specification
