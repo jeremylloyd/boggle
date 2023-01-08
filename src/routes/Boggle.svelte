@@ -176,7 +176,7 @@
     <div class="game__current">{status}</div>
     <div class="game__board">
       {#each boggleState.tiles as tile, id}
-        <BoggleTile {...tile} on:mousedown={() => createWord(id)} on:mouseup={finishWord} on:mouseenter={() => handleMouseEnter(id)}/>
+        <BoggleTile {...tile} on:mousedown={() => createWord(id)} on:mouseenter={() => handleMouseEnter(id)} on:mouseup={finishWord} on:touchstart={() => createWord(id)} on:touchenter={() => handleMouseEnter(id)} on:touchend={finishWord}/>
       {/each}
     </div>
   </div>
