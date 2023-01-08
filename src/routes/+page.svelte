@@ -10,8 +10,6 @@
   export let data;
 </script>
 
-<h1>{data.dictionary.slice(170000, 170010)}</h1>
-
 <main class="page" on:mouseup={finishWord} on:mouseleave={finishWord}>
   <header class="page__header">
     <h1 class="page__title">Boggle</h1>
@@ -26,7 +24,7 @@
     <div class="page__score">Score: 23</div>
   </section>
 
-  <Boggle bind:this={boggle}/>
+  <Boggle bind:this={boggle} dictionary={data.dictionary}/>
 </main>
 
 <style>

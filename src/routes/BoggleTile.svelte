@@ -32,7 +32,9 @@
 
     border: solid 1px black;
     aspect-ratio: 1/1;
-    border-radius: 15%;
+    border-radius: 40%;
+
+    transition: 0.2s;
   }
 
   .tile--selected {

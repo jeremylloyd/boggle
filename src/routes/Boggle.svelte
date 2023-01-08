@@ -1,96 +1,7 @@
 <script>
   import BoggleTile from './BoggleTile.svelte';
 
-  let boggleState = {
-    'letters': 'abcdefghijklmnop',
-    'wordCurrent': [],
-    'tiles': [
-      {
-        letter: 'a',
-        state: 'disabled',
-      },
-      {
-        letter: 'b',
-        state: 'selected',
-      },
-      {
-        letter: 'c',
-        state: 'disabled',
-      },
-      {
-        letter: 'd',
-        state: 'disabled',
-      },
-      {
-        letter: 'e',
-        state: 'disabled',
-      },
-      {
-        letter: 'f',
-        state: 'disabled',
-      },
-      {
-        letter: 'g',
-        state: 'disabled',
-      },
-      {
-        letter: 'h',
-        state: 'disabled',
-      },
-      {
-        letter: 'i',
-        state: 'disabled',
-      },
-      {
-        letter: 'j',
-        state: 'disabled',
-      },
-      {
-        letter: 'k',
-        state: 'disabled',
-      },
-      {
-        letter: 'l',
-        state: 'disabled',
-      },
-      {
-        letter: 'm',
-        state: 'disabled',
-      },
-      {
-        letter: 'n',
-        state: 'disabled',
-      },
-      {
-        letter: 'o',
-        state: 'disabled',
-      },
-      {
-        letter: 'p',
-        state: 'disabled',
-      },
-    ],
-    'possibleWords': new Set(['abc', 'dhgf', 'lkji']),
-    'wordsCorrect': new Set(['abc', 'dhgf', 'lkji']),
-    'wordsIncorrect': new Set(),
-  }
-
-  let words = new Set([1, 2, 3])
-  const minWordLength = 4;
-
-  let wordCurrent;
-  let status = '';
-
-  const tileIsDisabled = (tileId) => {
-    if (boggleState.wordCurrent.length === 0) return true
-
-    // Check if the tile is a neighbour of the previous tile
-    if (boggleState.wordCurrent.length > 0) {
-      if (!neighbours(4, boggleState.wordCurrent[boggleState.wordCurrent.length - 1]).includes(tileId)) return true
-    }
-
-    return false
-  }
+  export let dictionary;
 
   const neighbours = (gridSize, cell) => {
     let neighbours = []
@@ -138,6 +49,80 @@
     return neighbours
   }
 
+  const checkWordTree = (prefixIds, letters, possibleWords = null) => {
+    let words = new Set();
+    let newWords;
+
+    let prefix = prefixIds.map(id => letters[id]).join('');
+
+    if (possibleWords === null) {
+      possibleWords = dictionary;
+    } else {
+      possibleWords = possibleWords.filter(word => word.startsWith(prefix));
+    }
+
+    let isWord = possibleWords.includes(prefix);
+    if (isWord) words.add(prefix);
+
+    // if the number of words in the dictionary starting with these characters is positive, checkWordTree for wordStart + each of the boggle neighbours
+    let moreWordsStartWithPrefix = possibleWords.filter(word => word.startsWith(prefix)).length > 0 + isWord;
+    
+    if (moreWordsStartWithPrefix) {
+      let neighboursToTest = neighbours(4, prefixIds[prefixIds.length - 1]).filter(neighbour => !prefixIds.includes(neighbour));
+
+      neighboursToTest.forEach(neighbour => {
+        newWords = checkWordTree([...prefixIds, neighbour], letters, possibleWords);
+        newWords.forEach(word => words.add(word));
+      })
+    }
+
+    return words;
+  }
+
+  const getPossibleWords = (letters, minLength = 4) => {
+    let words = new Set();
+
+    for (let i = 0; i < letters.length; i++) {
+      let newWords = checkWordTree([i], letters);
+      newWords.forEach(word => {
+        if (word.length >= minLength) words.add(word)
+      });
+    }
+
+    return words
+  }
+
+  const buildBoggleState = (letters, minWordLength) => {
+    let state = {
+      'letters': letters,
+      'minWordLength': minWordLength,
+      'possibleWords': getPossibleWords(letters, minWordLength),
+      'wordCurrent': [],
+      'wordsCorrect': new Set(),
+      'tiles': letters.split('').map(letter => {
+        return {
+          letter: letter,
+          state: 'disabled',
+        }
+      })
+    }
+    console.log('Board generated. Possible words: ', state.possibleWords);
+    return state
+  }
+
+  let boggleState = buildBoggleState('awofpobketruvmfe', 4);
+
+  const tileIsDisabled = (tileId) => {
+    if (boggleState.wordCurrent.length === 0) return true
+
+    // Check if the tile is a neighbour of the previous tile
+    if (boggleState.wordCurrent.length > 0) {
+      if (!neighbours(4, boggleState.wordCurrent[boggleState.wordCurrent.length - 1]).includes(tileId)) return true
+    }
+
+    return false
+  }
+
   const createWord = (tileId) => {
     console.log(`word created, starting with letter ${boggleState.letters[tileId]}`)
     boggleState.wordCurrent = [tileId]
@@ -146,7 +131,7 @@
   export const finishWord = () => {
     
     console.log(`word finished: ${wordCurrent}`)
-    if (boggleState.wordCurrent.length > 0 && boggleState.wordCurrent.length >= minWordLength) {
+    if (boggleState.wordCurrent.length > 0 && boggleState.wordCurrent.length >= boggleState.minWordLength) {
       boggleState.wordsCorrect.add(wordCurrent);
     }
     boggleState.wordCurrent = []
@@ -166,6 +151,9 @@
     // Log the updated word
     console.log(`word updated: ${wordCurrent}`)
   }
+
+  let wordCurrent;
+  let status = '';
 
   $: wordCurrent = boggleState.wordCurrent.map((tileId) => boggleState.letters[tileId]).join('');
 
