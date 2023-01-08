@@ -32,7 +32,7 @@
 
     border: solid 1px black;
     aspect-ratio: 1/1;
-    border-radius: 40%;
+    border-radius: 50%;
 
     transition: 0.2s;
   }

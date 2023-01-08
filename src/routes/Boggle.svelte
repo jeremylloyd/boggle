@@ -3,6 +3,9 @@
 
   export let dictionary;
 
+  let wordCurrent;
+  let status = '';
+
   const neighbours = (gridSize, cell) => {
     let neighbours = []
 
@@ -124,19 +127,33 @@
   }
 
   const createWord = (tileId) => {
-    console.log(`word created, starting with letter ${boggleState.letters[tileId]}`)
-    boggleState.wordCurrent = [tileId]
+    boggleState.wordCurrent = [tileId];
+    updateStatus();
   }
 
-  export const finishWord = () => {
+  const updateStatus = () => {
+    status = boggleState.wordCurrent.map(id => boggleState.letters[id]).join('');
+  }
+
+  export const finishWord = () => {    
+    let isBlank = boggleState.wordCurrent.length === 0;
+    if (isBlank) return
     
+    let isTooShort = boggleState.wordCurrent.length < boggleState.minWordLength;
+    let isNotInDictionary = !boggleState.possibleWords.has(wordCurrent);
+
     console.log(`word finished: ${wordCurrent}`)
-    if (boggleState.wordCurrent.length > 0 && boggleState.wordCurrent.length >= boggleState.minWordLength) {
-      boggleState.wordsCorrect.add(wordCurrent);
+    if (isTooShort) {
+      status = `${wordCurrent} is less than ${boggleState.minWordLength} letters long`
+    } else if (isNotInDictionary) {
+      status = `${wordCurrent} is not a word`
+    } else {
+      boggleState.wordsCorrect.add(wordCurrent)
     }
+
     boggleState.wordCurrent = []
   }
-
+  
   const handleMouseEnter = (tileId) => {
     if (!boggleState.wordCurrent.length > 0) return
     // Ensure the mouse entered a neighbour of the previous tile
@@ -144,19 +161,14 @@
     // Ensure the tile isn't already in the word
     if (boggleState.wordCurrent.includes(tileId)) return
     
-    boggleState.wordCurrent.push(tileId)
-    // ensure svelte reacts to the change
-    boggleState.wordCurrent = boggleState.wordCurrent
-
-    // Log the updated word
-    console.log(`word updated: ${wordCurrent}`)
+    boggleState.wordCurrent.push(tileId);
+    
+    boggleState.wordCurrent = boggleState.wordCurrent;
+    updateStatus()
   }
 
-  let wordCurrent;
-  let status = '';
-
   $: wordCurrent = boggleState.wordCurrent.map((tileId) => boggleState.letters[tileId]).join('');
-
+  
   // update tile state in boggleState
   $: boggleState.tiles = boggleState.tiles.map((tile, id) => {
     if (boggleState.wordCurrent.includes(id)) {
